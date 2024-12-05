@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Audio Player',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: AudioPlayerScreen(),
+    );
+  }
+}
+
+class AudioPlayerScreen extends StatefulWidget {
+  @override
+  _AudioPlayerScreenState createState() => _AudioPlayerScreenState();
+}
+
+class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
+  final AudioPlayer _player = AudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+    _initPlayer();
+  }
+
+  Future<void> _initPlayer() async {
+    await _player.setUrl('http://192.168.1.40:5000/get_audio');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Audio Player'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Playing Audio from URL:'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _player.play();
+              },
+              child: Text('Play'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _player.pause();
+              },
+              child: Text('Pause'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _player.stop();
+              },
+              child: Text('Stop'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+}

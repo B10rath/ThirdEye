@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AssetsAudioPlayer _audioPlayer = AssetsAudioPlayer();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Audio Player'),
+        ),
+        body: Center(
+          child: ElevatedButton(
+            child: Text('Play Audio'),
+            onPressed: () async {
+              await _audioPlayer.open(
+                Audio.network('https://192.168.1.40:5000/get_audio'),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
